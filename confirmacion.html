@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Registro</title>
+</head>
+<body>
+    <h1 id="mensajeBienvenida"></h1>
+    <div id="resumenRegistro"></div>
+    <button id="regresarInicio">Regresar al Inicio</button>
+    <button id="continuarAreaUsuario">Continuar al Área de Usuario</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('mensajeBienvenida').textContent = `Bienvenido, ${userData.nombre}!`;
+                document.getElementById('resumenRegistro').innerHTML = `
+                    <p>Correo electrónico: ${userData.email}</p>
+                    <p>Fecha de nacimiento: ${userData.fechaNacimiento || 'No proporcionada'}</p>
+                `;
+            }
+
+            // Agrega el evento de clic para el botón "Regresar al Inicio"
+            document.getElementById('regresarInicio').addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+
+            // Agrega el evento de clic para el botón "Continuar al Área de Usuario"
+            document.getElementById('continuarAreaUsuario').addEventListener('click', () => {
+                window.location.href = 'area_usuario.html'; // Cambia esto a la URL correcta de tu área de usuario
+            });
+        });
+    </script>
+</body>
+</html>

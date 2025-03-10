@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Formulario de Registro</h2>
+
+<form id="registroForm" action="confirmacion.html" method="POST">
+    <!-- Nombre completo -->
+    <label for="nombre">Nombre completo (obligatorio):</label>
+    <input type="text" id="nombre" name="nombre" required>
+    
+    <!-- Correo electrónico -->
+    <label for="email">Correo electrónico (obligatorio, con validación de formato):</label>
+    <input type="email" id="email" name="email" required>
+    
+    <!-- Contraseña -->
+    <label for="password">Contraseña (obligatorio, mínimo 8 caracteres, debe incluir al menos una letra mayúscula, una minúscula y un número):</label>
+    <input type="password" id="password" name="password" required minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*" title="La contraseña debe contener al menos una letra mayúscula, una minúscula y un número.">
+    
+    <!-- Confirmación de contraseña -->
+    <label for="confirmPassword">Confirmación de contraseña (debe coincidir con la contraseña):</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" required pattern=".*" title="La confirmación de contraseña debe coincidir con la contraseña.">
+    
+    <!-- Fecha de nacimiento -->
+    <label for="fechaNacimiento">Fecha de nacimiento (opcional):</label>
+    <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+    
+    <!-- Términos y condiciones -->
+    <label>
+        <input type="checkbox" id="terminos" name="terminos" required>
+        Acepto los términos y condiciones
+    </label>
+    
+    <!-- Botón de envío -->
+    <button type="submit" id="submitBtn">Enviar</button>
+</form>
+
+<script>
+    const form = document.getElementById('registroForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+
+    confirmPassword.addEventListener('input', () => {
+        if (confirmPassword.value !== password.value) {
+            confirmPassword.setCustomValidity('Las contraseñas no coinciden');
+        } else {
+            confirmPassword.setCustomValidity('');
+        }
+    });
+
+    password.addEventListener('input', () => {
+        if (confirmPassword.value !== password.value) {
+            confirmPassword.setCustomValidity('Las contraseñas no coinciden');
+        } else {
+            confirmPassword.setCustomValidity('');
+        }
+    });
+
+    form.addEventListener('submit', (event) => {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            form.reportValidity();
+        } else {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const userData = {
+                nombre: formData.get('nombre'),
+                email: formData.get('email'),
+                fechaNacimiento: formData.get('fechaNacimiento')
+            };
+            localStorage.setItem('userData', JSON.stringify(userData));
+            window.location.href = 'confirmacion.html';
+        }
+    });
+</script>
+
+</body>
+</html>
